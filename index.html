@@ -58,6 +58,56 @@
       // 🧠 Implement a `getAllReversed` method which returns the ints in reverse order
       // ❗ WARNING: except for `getAllReversed`, methods must respect the order of the integers
       // ❗ WARNING: note that none of the methods actually mutate the `ints` property
+      constructor(){
+        this.ints = [...arguments];
+      }
+
+      getAll(){
+        return this.ints;
+      }
+
+      getEvens(){
+        return this.ints.filter(int => int % 2 === 0);
+      }
+
+      getNegatives(){
+        return this.ints.filter(int => int < 0);
+      }
+
+      getAllSquared(){
+        const squaredInts = [];
+
+        this.ints.forEach(int => {
+          squaredInts.push(int**2);
+        });
+
+        return squaredInts
+      }
+
+      pop(){
+        return this.ints.pop();
+      }
+
+      push(int){
+        this.ints.push(int);
+        return this.ints;
+      }
+
+      getEveryNth(n){
+        let count = 0;
+        return this.ints.filter((int, i) => {
+          if(i === count){
+            count +=n
+            return true;
+          }else{
+            return false
+          }
+        });
+      }
+
+      getAllReversed(){
+        return this.ints.reverse();
+      }
 
     }
 
@@ -77,6 +127,36 @@
       //      * When disengaging the safety, return "Safety disabled!"
       // 🌟 HINT: instances need to keep track of their maximum capacity as well as their current capacity
 
+      constructor(projectiles) {
+        this.projectiles = projectiles;
+        this.safety = true;
+        this.capacity = projectiles;
+      }
+
+      shoot(){
+        if(this.projectiles > 0 && this.safety ===  false){
+          this.projectiles -=1;
+          return "Bang!"
+        }else{
+          return "Click!"
+        }
+      }
+
+      reload(projectiles) {
+        if(typeof projectiles !== "number" || projectiles < 1) return "Error reloading!";
+        this.projectiles = projectiles > this.capacity ? this.capacity : projectiles;
+        return `${this.projectiles} projectiles left!`
+      }
+
+      toggleSafety(){
+        if(this.safety === true){
+          this.safety = false;
+          return "Safety disabled!"
+        }else if(this.safety === false){
+          this.safety = true;
+          return "Safety enabled!"
+        }
+      }
     }
 
     // 👉 CHALLENGE 3 EBook
@@ -96,6 +176,20 @@
       // 🌟 HINT: remember about the `slice` method which strings and arrays have
       // ❗ Feel free to implement `back`, although this is not required nor graded
 
+      constructor(wholeText, characterQuantity){
+        this.wholeText = wholeText;
+        this.characterQuantity = characterQuantity;
+        this.currentCharacter = 0;
+      }
+
+      next(){
+        
+        const result = this.wholeText.split('').splice(this.currentCharacter, this.characterQuantity).join('');
+        this.currentCharacter = this.currentCharacter + this.characterQuantity;
+        if(result === "") return null;
+        
+        return result;
+      }
     }
 
     // 👉 CHALLENGE 4 AntFarm
@@ -130,6 +224,29 @@
       //      console.log(list) // prints ["a"]
       // 👉 HINT: if you are not feeling confident with map and filter, solve the problem with for loops,
       //      and with the piece of mind of all tests passing, refactor to use map/filter
+      constructor(){
+        this.ants = [...arguments].map(ant => ({name: ant, health: 100}));
+      }
+
+      work(){
+        if(this.ants.length === 0) return "No ants here. Did you work them to death?"
+      
+        const result = `${this.ants.length} ants starting work!`;
+        this.ants.forEach((ant, i) => this.ants[i].health = ant.health - 20);
+        this.ants = this.ants.filter(ant => ant.health >= 1);
+
+        return result
+      }
+
+      feed(name){
+        const ants = this.ants.filter(ant => ant.name === name);
+        if(ants.length > 0){
+          ants.map((ant, i) => ant.health = ant.health + 15);
+          return "Yum!"
+        }else{
+          return `${name} not found!`
+        }
+      }
 
     }
 
